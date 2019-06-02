@@ -1,13 +1,24 @@
-resource "aws_kms_key" "kms_key" {
-  description             = "${var.description}"
-  policy                  = "${var.policy}"
-  is_enabled              = "${var.is_enabled}"
-  deletion_window_in_days = "${var.deletion_window_in_days}"
-  enable_key_rotation     = "${var.enable_key_rotation}"
-  tags                    = "${merge(var.default_tags, map("name", format("%s", var.kms_name)))}"
+provider "aws" {
+    region              = "us-east-1" 
 }
 
-resource "aws_kms_alias" "kms_key_alias" {
-  name          = "alias/${var.kms_name}"
-  target_key_id = "${aws_kms_key.kms_key.key_id}"
+resource "aws_secretsmanager_secret" "secret" {
+  description           = "${var.secret_description}"
+  kms_key_id            = "${var.kms_key_id}"
+  name                  = "${var.name}"
+}
+
+resource "aws_secretsmanager_secret_version" "secret" {
+  lifecycle {
+    ignore_changes = [
+      "secret_string"
+    ]
+  }
+  secret_id             = "${aws_secretsmanager_secret.secret.id}"
+  secret_string         = <<EOF
+{
+  "username": "${var.username}",
+  "password": "${var.password}"
+}
+EOF
 }
