@@ -1,13 +1,11 @@
-provider "aws" {
-    region              = "us-east-1" 
+data "aws_kms_alias" "kms_id" {
+  name                  = "alias/${var.kms_key_name}"
 }
-
 resource "aws_secretsmanager_secret" "secret" {
   description           = "${var.secret_description}"
-  kms_key_id            = "${var.kms_key_id}"
+  kms_key_id            = "${data.aws_kms_alias.kms_id.arn}"
   name                  = "${var.name}"
 }
-
 resource "aws_secretsmanager_secret_version" "secret" {
   lifecycle {
     ignore_changes = [
@@ -18,7 +16,7 @@ resource "aws_secretsmanager_secret_version" "secret" {
   secret_string         = <<EOF
 {
   "username": "${var.username}",
-  "password": "${var.password}"
+  "password": "${var.password}",
 }
 EOF
 }
