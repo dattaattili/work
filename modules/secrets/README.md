@@ -6,7 +6,8 @@ This module is used to create a secret inside secrets manager
 
 Pass in the following parametes into the source file so that we can create a secret inside secrets manager
 
-```module "test_secrets" {
+```
+module "test_secrets" {
    source                      = "./modules/secrets"
    secret_description          = "test for the ssm"
    kms_key_name                = "test"
@@ -16,6 +17,7 @@ Pass in the following parametes into the source file so that we can create a sec
     key2                       = "value2"
     key3                       = "value3"
   }
-}```
+}
+```
 
 key_values variable is used to create n number of key value pair so this module will help to create secrets for different use case. 
