@@ -7,10 +7,8 @@ variable "kms_key_name" {
 variable "name" {
     description              = "name of the secret"          
 }
-variable "username" {
-    description              = "user name for test"         
+variable "key_values" {
+    type                     = "map"
 }
-variable "password" {
-    description              = "test password"         
-}
+
 
