@@ -1,4 +1,4 @@
-# Terraform module for sercrets manager.
+# Terraform module for secrets manager.
 
 This module is used to create a secret inside secrets manager
 
